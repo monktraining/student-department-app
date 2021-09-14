@@ -3,13 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.OpenApi.Models;
 using StudentDepartmentApp.Models;
 
 namespace StudentDepartmentApp
@@ -21,12 +16,10 @@ namespace StudentDepartmentApp
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1",new OpenApiInfo() { Title = "StudentDepartmentApi", Version = "v1"});
-            });
+            services.AddVersionedApiExplorer();
+            services.AddSwaggerGen();
 
-            services.AddDbContext<StudentDepartmentDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LocalConnectionString")));
+            services.AddDbContext<StudentDepartmentDbContext>(options => options.UseInMemoryDatabase("MyApp"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,6 +30,7 @@ namespace StudentDepartmentApp
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("v1/swagger.json","API");

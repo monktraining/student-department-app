@@ -7,7 +7,7 @@ namespace StudentDepartmentApp.Models
         public DbSet<Student> Students { get; set; }
         public DbSet<Department> Departments { get; set; }
 
-        public StudentDepartmentDbContext()
+        public StudentDepartmentDbContext(DbContextOptions<StudentDepartmentDbContext> options): base(options)
         {
             Database.EnsureCreated();
         }
